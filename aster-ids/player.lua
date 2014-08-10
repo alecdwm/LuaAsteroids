@@ -3,6 +3,8 @@ player = {}
 vector = require "libraries.hump.vector"
 require "libraries.glowShape"
 
+require "aster-ids.bullet"
+
 local shipverts =	{	 00, 20,
 						 15,-15,
 						 05,-10,
@@ -21,6 +23,9 @@ function player:create()
 	newObj.thrust = 120
 	newObj.spin = 6
 	newObj.dragFactor = 0.9
+	newObj.canfire = true
+	newObj.dtotal = 0
+	newObj.fireFrequency = 0.5 -- Seconds/shot
 	newObj.drawshape = shipverts
 	newObj.drawshape1 = thrustverts
 	newObj.drawshape1_active = false
@@ -53,6 +58,22 @@ function player:update(dt)
 		-- Effects
 		self.drawshape1_active = false
 		audio.thrust:stop()
+	end
+	-- Weapons
+	if not self.canfire then
+		print(self.dtotal)
+		if self.dtotal >= self.fireFrequency then
+			self.dtotal = 0
+			self.canfire = true
+		else
+			self.dtotal = self.dtotal + dt
+		end
+	end
+	if love.keyboard.isDown(" ") then
+		if self.canfire then
+			self:fire()
+			self.canfire = false
+		end
 	end
 
 	---- Move Ship
@@ -95,4 +116,23 @@ function player:draw()
 	the ship. ]]
 	glowShape(255,255,255,"polygon",self.drawshape)
 	love.graphics.pop()
+end
+
+function player:fire()
+	audio.fire:play()
+
+	local x,y = self.position:unpack()
+	local vx,vy = self.velocity:unpack()
+
+	local vx = math.cos(self.rotation) * 800
+	local vy = math.sin(self.rotation) * 800
+
+	for key,ent in pairs(bullets) do
+		if ent.active then
+			-- Do nothing
+		else
+			ent:fire(x,y,vx,vy,true,0.8)
+			return
+		end
+	end
 end
