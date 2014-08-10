@@ -14,4 +14,3 @@ Asteroids for Löve2D
 [Atari](http://www.atari.com/)  
 [LÖVE2D](http://www.love2d.org)  
 [Helper Utilities for More Productivity](http://vrld.github.io/hump/)  
-[Glow Effect](http://nova-fusion.com/2011/07/16/glow-effect-for-lined-shapes-in-love2d)  

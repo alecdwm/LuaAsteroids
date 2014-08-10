@@ -1,7 +1,6 @@
 player = {}
 
 vector = require "libraries.hump.vector"
-require "libraries.glowShape"
 
 require "aster-ids.bullet"
 
@@ -105,15 +104,14 @@ function player:draw()
 		if show < 0.08 then
 			-- Don't show anything
 		else
-			glowShape(0,191,255,"polygon",self.drawshape1) -- blue
+			love.graphics.setColor(0,191,255,255)
+			love.graphics.polygon("line",self.drawshape1)
 		end
 	end
 	love.graphics.setColor(0,0,0,255)
-	love.graphics.polygon("fill",self.drawshape) --[[ This
-	makes the background of the ship black to prevent the
-	inner glow from the	thruster being visible from inside
-	the ship. ]]
-	glowShape(255,255,255,"polygon",self.drawshape)
+	love.graphics.polygon("fill",self.drawshape)
+	love.graphics.setColor(255,255,255,255)
+	love.graphics.polygon("line",self.drawshape)
 	love.graphics.pop()
 end
 

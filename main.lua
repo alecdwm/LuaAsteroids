@@ -1,12 +1,17 @@
 audio = {}
 
 bullets = {}
-asteroids = {}
+asteroidLgs = {}
+asteroidMids = {}
+asteroidSms = {}
 
 function love.load()
 	require "aster-ids.music"
 	require "aster-ids.player"
 	require "aster-ids.bullet"
+	require "aster-ids.asteroidLg"
+	require "aster-ids.asteroidMid"
+	require "aster-ids.asteroidSm"
 	audio.bangLarge =	love.audio.newSource("aster-ids/audio/bangLarge.wav")
 	audio.bangMedium =	love.audio.newSource("aster-ids/audio/bangMedium.wav")
 	audio.bangSmall =	love.audio.newSource("aster-ids/audio/bangSmall.wav")
@@ -26,6 +31,15 @@ function love.load()
 	for i=0,20 do
 		bullets[i] = bullet:create(i)
 	end
+	for i=0,6 do
+		asteroidLgs[i] = asteroidLg:create(i)
+	end
+	for i=0,12 do
+		asteroidMids[i] = asteroidMid:create(i)
+	end
+	for i=0,27 do
+		asteroidSms[i] = asteroidSm:create(i)
+	end
 end
 
 function love.update(dt)
@@ -34,10 +48,28 @@ function love.update(dt)
 	for key,ent in pairs(bullets) do
 		ent:update(dt)
 	end
+	for key,ent in pairs(asteroidLgs) do
+		ent:update(dt)
+	end
+	for key,ent in pairs(asteroidMids) do
+		ent:update(dt)
+	end
+	for key,ent in pairs(asteroidSms) do
+		ent:update(dt)
+	end
 end
 
 function love.draw()
 	for key,ent in pairs(bullets) do
+		ent:draw()
+	end
+	for key,ent in pairs(asteroidLgs) do
+		ent:draw()
+	end
+	for key,ent in pairs(asteroidMids) do
+		ent:draw()
+	end
+	for key,ent in pairs(asteroidSms) do
 		ent:draw()
 	end
 	ourship:draw()

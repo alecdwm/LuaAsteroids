@@ -60,6 +60,6 @@ function bullet:draw(dt)
 	local x,y = self.position:unpack()
 
 	love.graphics.setColor(self.color)
-	love.graphics.setPointSize(2)
+	love.graphics.setPointSize(2.5)
 	love.graphics.point(x,y)
 end
