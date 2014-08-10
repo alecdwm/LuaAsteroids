@@ -61,7 +61,6 @@ function player:update(dt)
 	end
 	-- Weapons
 	if not self.canfire then
-		print(self.dtotal)
 		if self.dtotal >= self.fireFrequency then
 			self.dtotal = 0
 			self.canfire = true
