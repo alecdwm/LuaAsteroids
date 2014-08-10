@@ -11,6 +11,7 @@ Asteroids for Löve2D
 >This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ## Credits
+[Atari](http://www.atari.com/)
 [LÖVE2D](http://www.love2d.org)
 [Helper Utilities for More Productivity](http://vrld.github.io/hump/)
 [Glow Effect](http://nova-fusion.com/2011/07/16/glow-effect-for-lined-shapes-in-love2d)
