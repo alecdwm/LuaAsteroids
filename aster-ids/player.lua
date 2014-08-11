@@ -1,6 +1,7 @@
 player = {}
 
-vector = require "libraries.hump.vector"
+local signals = require "libraries.hump.signal"
+local vector = require "libraries.hump.vector"
 
 require "aster-ids.bullet"
 
@@ -48,7 +49,8 @@ function player:update(dt)
 	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
 		-- Effects
 		self.drawshape1_active = true
-		audio.thrust:play()
+		game.signalregistry:emit("thrust-start")
+		--audio.thrust:play()
 
 		-- Calculations
 		self.velocity.x = self.velocity.x + math.cos(self.rotation) * self.thrust * dt
@@ -56,7 +58,8 @@ function player:update(dt)
 	else
 		-- Effects
 		self.drawshape1_active = false
-		audio.thrust:stop()
+		game.signalregistry:emit("thrust-stop")
+		--audio.thrust:stop()
 	end
 	-- Weapons
 	if not self.canfire then
@@ -116,7 +119,8 @@ function player:draw()
 end
 
 function player:fire()
-	audio.fire:play()
+	game.signalregistry:emit("fire")
+	--audio.fire:play()
 
 	local x,y = self.position:unpack()
 	local vx,vy = self.velocity:unpack()

@@ -1,3 +1,5 @@
+local signals = require "libraries.hump.signal"
+
 music = {}
 
 local dtotal = 0
@@ -14,10 +16,10 @@ end
 
 function music.playBeat()
 	if nextBeat == 1 then
-		audio.beat1:play()
+		signals.emit("beat1")
 		nextBeat = 2
 	else
-		audio.beat2:play()
+		signals.emit("beat2")
 		nextBeat = 1
 		if frequency < .2 then
 			-- Do nothing

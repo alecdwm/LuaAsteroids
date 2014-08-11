@@ -1,82 +1,101 @@
-audio = {}
+local gamestate = require "libraries.hump.gamestate"
+local signals = require "libraries.hump.signal"
 
-bullets = {}
-asteroidLgs = {}
-asteroidMids = {}
-asteroidSms = {}
+local menu = {}
+game = {}
 
-function love.load()
+game.ourship = {}
+game.bullets = {}
+game.asteroidLgs = {}
+game.asteroidMids = {}
+game.asteroidSms = {}
+
+function menu:enter()
+	menu.font = love.graphics.setNewFont(20)
+end
+
+function menu:draw()
+	love.graphics.print("ASTERÖIDS",love.graphics.getWidth()/2,love.graphics.getHeight()/2-15,0,1,1,menu.font:getWidth("ASTER-IDS")/2,menu.font:getHeight("ASTER-IDS")/2)
+	love.graphics.print("Press ENTER to Play",love.graphics.getWidth()/2,love.graphics.getHeight()/2+10,0,1,1,menu.font:getWidth("Press Enter to Play")/2,menu.font:getHeight("Press Enter to Play")/2)
+end
+
+function menu:keypressed(key)
+	if key == "return" then
+		gamestate.switch(game)
+	end
+	if key == "q" or key == "escape" then
+		love.event.quit()
+	end
+end
+
+function game:enter()
 	require "aster-ids.music"
 	require "aster-ids.player"
 	require "aster-ids.bullet"
 	require "aster-ids.asteroidLg"
 	require "aster-ids.asteroidMid"
 	require "aster-ids.asteroidSm"
-	audio.bangLarge =	love.audio.newSource("aster-ids/audio/bangLarge.wav")
-	audio.bangMedium =	love.audio.newSource("aster-ids/audio/bangMedium.wav")
-	audio.bangSmall =	love.audio.newSource("aster-ids/audio/bangSmall.wav")
-	audio.beat1 =		love.audio.newSource("aster-ids/audio/beat1.wav")
-	audio.beat2 =		love.audio.newSource("aster-ids/audio/beat2.wav")
-	audio.extraShip =	love.audio.newSource("aster-ids/audio/extraShip.wav")
-	audio.fire =		love.audio.newSource("aster-ids/audio/fire.wav")
-	audio.saucerBig =	love.audio.newSource("aster-ids/audio/saucerBig.wav")
-	audio.saucerSmall =	love.audio.newSource("aster-ids/audio/saucerSmall.wav")
-	audio.thrust =		love.audio.newSource("aster-ids/audio/thrust.wav")
-	audio.thrust:setLooping(true)
+
+	game.signalregistry = signals.new()
 
 	love.graphics.setBackgroundColor(0,0,0)
 
-	ourship = player:create()
+	game.ourship = player:create()
 
 	for i=0,20 do
-		bullets[i] = bullet:create(i)
+		game.bullets[i] = bullet:create(i)
 	end
 	for i=0,6 do
-		asteroidLgs[i] = asteroidLg:create(i)
+		game.asteroidLgs[i] = asteroidLg:create(i)
 	end
 	for i=0,12 do
-		asteroidMids[i] = asteroidMid:create(i)
+		game.asteroidMids[i] = asteroidMid:create(i)
 	end
 	for i=0,27 do
-		asteroidSms[i] = asteroidSm:create(i)
+		game.asteroidSms[i] = asteroidSm:create(i)
 	end
 end
 
-function love.update(dt)
+function game:update(dt)
 	music.update(dt)
-	ourship:update(dt)
-	for key,ent in pairs(bullets) do
+	game.ourship:update(dt)
+	for key,ent in pairs(game.bullets) do
 		ent:update(dt)
 	end
-	for key,ent in pairs(asteroidLgs) do
+	for key,ent in pairs(game.asteroidLgs) do
 		ent:update(dt)
 	end
-	for key,ent in pairs(asteroidMids) do
+	for key,ent in pairs(game.asteroidMids) do
 		ent:update(dt)
 	end
-	for key,ent in pairs(asteroidSms) do
+	for key,ent in pairs(game.asteroidSms) do
 		ent:update(dt)
 	end
 end
 
-function love.draw()
-	for key,ent in pairs(bullets) do
+function game:draw()
+	for key,ent in pairs(game.bullets) do
 		ent:draw()
 	end
-	for key,ent in pairs(asteroidLgs) do
+	for key,ent in pairs(game.asteroidLgs) do
 		ent:draw()
 	end
-	for key,ent in pairs(asteroidMids) do
+	for key,ent in pairs(game.asteroidMids) do
 		ent:draw()
 	end
-	for key,ent in pairs(asteroidSms) do
+	for key,ent in pairs(game.asteroidSms) do
 		ent:draw()
 	end
-	ourship:draw()
+	game.ourship:draw()
 end
 
-function love.keypressed(key)
+function game:keypressed(key)
 	if key == "q" or key == "escape" then
 		love.event.quit()
 	end
+end
+
+function love.load()
+	gamestate.registerEvents()
+	gamestate.switch(menu)
 end
