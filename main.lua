@@ -1,14 +1,32 @@
-local gamestate = require "libraries.hump.gamestate"
-local signals = require "libraries.hump.signal"
+-- Libraries --
+gamestate = require "libraries.hump.gamestate"
+vector = require "libraries.hump.vector"
+signals = require "libraries.hump.signal"
+beholder = require "libraries.beholder"
 
+-- Game States --
 local menu = {}
-game = {}
+local game = {}
 
-game.ourship = {}
-game.bullets = {}
-game.asteroidLgs = {}
-game.asteroidMids = {}
-game.asteroidSms = {}
+local gameobjects = {}
+gameobjects.ourship = {}
+gameobjects.bullets = {}
+gameobjects.asteroidLgs = {}
+gameobjects.asteroidMids = {}
+gameobjects.asteroidSms = {}
+
+function love.load()
+	require "aster-ids.music"
+	require "aster-ids.sound"
+	require "aster-ids.player"
+	require "aster-ids.bullet"
+	require "aster-ids.asteroidLg"
+	require "aster-ids.asteroidMid"
+	require "aster-ids.asteroidSm"
+	sound:init()
+	gamestate.registerEvents()
+	gamestate.switch(menu)
+end
 
 function menu:enter()
 	menu.font = love.graphics.setNewFont(20)
@@ -29,73 +47,59 @@ function menu:keypressed(key)
 end
 
 function game:enter()
-	require "aster-ids.music"
-	require "aster-ids.player"
-	require "aster-ids.bullet"
-	require "aster-ids.asteroidLg"
-	require "aster-ids.asteroidMid"
-	require "aster-ids.asteroidSm"
-
-	game.signalregistry = signals.new()
-
 	love.graphics.setBackgroundColor(0,0,0)
 
-	game.ourship = player:create()
+	gameobjects.ourship = player:create()
 
 	for i=0,20 do
-		game.bullets[i] = bullet:create(i)
+		gameobjects.bullets[i] = bullet:create(i)
 	end
 	for i=0,6 do
-		game.asteroidLgs[i] = asteroidLg:create(i)
+		gameobjects.asteroidLgs[i] = asteroidLg:create(i)
 	end
 	for i=0,12 do
-		game.asteroidMids[i] = asteroidMid:create(i)
+		gameobjects.asteroidMids[i] = asteroidMid:create(i)
 	end
 	for i=0,27 do
-		game.asteroidSms[i] = asteroidSm:create(i)
+		gameobjects.asteroidSms[i] = asteroidSm:create(i)
 	end
 end
 
 function game:update(dt)
 	music.update(dt)
-	game.ourship:update(dt)
-	for key,ent in pairs(game.bullets) do
+	gameobjects.ourship:update(dt)
+	for key,ent in pairs(gameobjects.bullets) do
 		ent:update(dt)
 	end
-	for key,ent in pairs(game.asteroidLgs) do
+	for key,ent in pairs(gameobjects.asteroidLgs) do
 		ent:update(dt)
 	end
-	for key,ent in pairs(game.asteroidMids) do
+	for key,ent in pairs(gameobjects.asteroidMids) do
 		ent:update(dt)
 	end
-	for key,ent in pairs(game.asteroidSms) do
+	for key,ent in pairs(gameobjects.asteroidSms) do
 		ent:update(dt)
 	end
 end
 
 function game:draw()
-	for key,ent in pairs(game.bullets) do
+	for key,ent in pairs(gameobjects.bullets) do
 		ent:draw()
 	end
-	for key,ent in pairs(game.asteroidLgs) do
+	for key,ent in pairs(gameobjects.asteroidLgs) do
 		ent:draw()
 	end
-	for key,ent in pairs(game.asteroidMids) do
+	for key,ent in pairs(gameobjects.asteroidMids) do
 		ent:draw()
 	end
-	for key,ent in pairs(game.asteroidSms) do
+	for key,ent in pairs(gameobjects.asteroidSms) do
 		ent:draw()
 	end
-	game.ourship:draw()
+	gameobjects.ourship:draw()
 end
 
 function game:keypressed(key)
 	if key == "q" or key == "escape" then
 		love.event.quit()
 	end
-end
-
-function love.load()
-	gamestate.registerEvents()
-	gamestate.switch(menu)
 end

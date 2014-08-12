@@ -1,45 +1,42 @@
-local class = require "libraries.hump.class"
-local signals = require "libraries.hump.signal"
+sound = {}
 
-sound = class{}
-
-local bangLarge = 0
-local bangMedium = 0
-local bangSmall = 0
-local beat1 = 0
-local beat2 = 0
-local extraShip = 0
-local fire = 0
-local saucerBig = 0
-local saucerSmall = 0
-local thrust = 0
+sound.bangLarge = 0
+sound.bangMedium = 0
+sound.bangSmall = 0
+sound.beat1 = 0
+sound.beat2 = 0
+sound.extraShip = 0
+sound.fire = 0
+sound.saucerBig = 0
+sound.saucerSmall = 0
+sound.thrust = 0
 
 function sound:init()
-	bangLarge =	love.audio.newSource("aster-ids/audio/bangLarge.wav")
-	bangMedium =	love.audio.newSource("aster-ids/audio/bangMedium.wav")
-	bangSmall =	love.audio.newSource("aster-ids/audio/bangSmall.wav")
-	beat1 =		love.audio.newSource("aster-ids/audio/beat1.wav")
-	beat2 =		love.audio.newSource("aster-ids/audio/beat2.wav")
-	extraShip =	love.audio.newSource("aster-ids/audio/extraShip.wav")
-	fire =		love.audio.newSource("aster-ids/audio/fire.wav")
-	saucerBig =	love.audio.newSource("aster-ids/audio/saucerBig.wav")
-	saucerSmall =	love.audio.newSource("aster-ids/audio/saucerSmall.wav")
-	thrust =		love.audio.newSource("aster-ids/audio/thrust.wav")
-	thrust:setLooping(true)
+	sound.bangLarge =	love.audio.newSource("aster-ids/audio/bangLarge.wav")
+	sound.bangMedium =	love.audio.newSource("aster-ids/audio/bangMedium.wav")
+	sound.bangSmall =	love.audio.newSource("aster-ids/audio/bangSmall.wav")
+	sound.beat1 =		love.audio.newSource("aster-ids/audio/beat1.wav")
+	sound.beat2 =		love.audio.newSource("aster-ids/audio/beat2.wav")
+	sound.extraShip =	love.audio.newSource("aster-ids/audio/extraShip.wav")
+	sound.fire =		love.audio.newSource("aster-ids/audio/fire.wav")
+	sound.saucerBig =	love.audio.newSource("aster-ids/audio/saucerBig.wav")
+	sound.saucerSmall =	love.audio.newSource("aster-ids/audio/saucerSmall.wav")
+	sound.thrust =		love.audio.newSource("aster-ids/audio/thrust.wav")
+	sound.thrust:setLooping(true)
 end
 
-game.signalregistry:register("thrust-start", function()
-	thrust:play()
+beholder.observe("thrust-start", function()
+	sound.thrust:play()
 end)
 
-game.signalregistry:register("thrust-end", function()
-	thrust:stop()
+beholder.observe("thrust-stop", function()
+	sound.thrust:stop()
 end)
 
-game.signalregistry:register("beat1", function()
-	beat1:play()
+beholder.observe("beat1", function()
+	sound.beat1:play()
 end)
 
-game.signalregistry:register("beat2", function()
-	beat2:play()
+beholder.observe("beat2", function()
+	sound.beat2:play()
 end)

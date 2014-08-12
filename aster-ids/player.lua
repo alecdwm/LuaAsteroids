@@ -1,8 +1,5 @@
 player = {}
 
-local signals = require "libraries.hump.signal"
-local vector = require "libraries.hump.vector"
-
 require "aster-ids.bullet"
 
 local shipverts =	{	 00, 20,
@@ -48,18 +45,20 @@ function player:update(dt)
 	-- Acceleration/Deceleration Control
 	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
 		-- Effects
-		self.drawshape1_active = true
-		game.signalregistry:emit("thrust-start")
-		--audio.thrust:play()
+		if not self.drawshape1_active then
+			self.drawshape1_active = true
+			beholder.trigger("thrust-start")
+		end
 
 		-- Calculations
 		self.velocity.x = self.velocity.x + math.cos(self.rotation) * self.thrust * dt
 		self.velocity.y = self.velocity.y + math.sin(self.rotation) * self.thrust * dt
 	else
 		-- Effects
-		self.drawshape1_active = false
-		game.signalregistry:emit("thrust-stop")
-		--audio.thrust:stop()
+		if self.drawshape1_active then
+			self.drawshape1_active = false
+			beholder.trigger("thrust-stop")
+		end
 	end
 	-- Weapons
 	if not self.canfire then
@@ -119,8 +118,7 @@ function player:draw()
 end
 
 function player:fire()
-	game.signalregistry:emit("fire")
-	--audio.fire:play()
+	beholder.trigger("fire")
 
 	local x,y = self.position:unpack()
 	local vx,vy = self.velocity:unpack()
