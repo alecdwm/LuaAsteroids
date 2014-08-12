@@ -1,13 +1,13 @@
 -- Libraries --
 gamestate = require "libraries.hump.gamestate"
 vector = require "libraries.hump.vector"
-signals = require "libraries.hump.signal"
 beholder = require "libraries.beholder"
 
 -- Game States --
 local menu = {}
 local game = {}
 
+-- Game Objects --
 local gameobjects = {}
 gameobjects.ourship = {}
 gameobjects.bullets = {}
@@ -66,7 +66,7 @@ function game:enter()
 end
 
 function game:update(dt)
-	music.update(dt)
+	--music.update(dt)
 	gameobjects.ourship:update(dt)
 	for key,ent in pairs(gameobjects.bullets) do
 		ent:update(dt)
