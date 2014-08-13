@@ -3,17 +3,22 @@ devspace = {}
 devspace.debug = true
 
 -- Libraries --
-gamestate =		require "libraries.hump.gamestate"
-vector =		require "libraries.hump.vector"
-class =			require "libraries.hump.class"
-timer =			require "libraries.hump.timer"
-beholder =		require "libraries.beholder"
+--camera =			require "libraries.hump.camera"
+class =				require "libraries.hump.class"
+gamestate =			require "libraries.hump.gamestate"
+--signal =			require "libraries.hump.signal"
+timer =				require "libraries.hump.timer"
+vector =			require "libraries.hump.vector"
+--vector-light =	require "libraries.hump.vector-light"
+beholder =			require "libraries.beholder"
+mlib =				require "libraries.mlib"
 
 -- Game Systems --
-stateSystem =	require "aster-ids.stateSystem"
-eclSystem =		require "aster-ids.eclSystem"
+stateSystem =		require "aster-ids.stateSystem"
+eclSystem =			require "aster-ids.eclSystem"
 
 function love.load()
+	eclSystem.load()
 	stateSystem.load()
 end
 

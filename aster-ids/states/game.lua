@@ -1,10 +1,7 @@
 game = {}
 
 function game:enter()
-	love.graphics.setBackgroundColor(0,0,0)
-
-	gameobjects.ourship = player:create()
-
+	--[[gameobjects.ourship = player:create()
 	for i=0,20 do
 		gameobjects.bullets[i] = bullet:create(i)
 	end
@@ -16,11 +13,11 @@ function game:enter()
 	end
 	for i=0,27 do
 		gameobjects.asteroidSms[i] = asteroidSm:create(i)
-	end
+	end]]
 end
 
 function game:update(dt)
-	--music.update(dt)
+	--[[music.update(dt)
 	gameobjects.ourship:update(dt)
 	for key,ent in pairs(gameobjects.bullets) do
 		ent:update(dt)
@@ -33,11 +30,11 @@ function game:update(dt)
 	end
 	for key,ent in pairs(gameobjects.asteroidSms) do
 		ent:update(dt)
-	end
+	end]]
 end
 
 function game:draw()
-	for key,ent in pairs(gameobjects.bullets) do
+	--[[for key,ent in pairs(gameobjects.bullets) do
 		ent:draw()
 	end
 	for key,ent in pairs(gameobjects.asteroidLgs) do
@@ -49,12 +46,15 @@ function game:draw()
 	for key,ent in pairs(gameobjects.asteroidSms) do
 		ent:draw()
 	end
-	gameobjects.ourship:draw()
+	gameobjects.ourship:draw()]]
 end
 
 function game:keypressed(key)
 	if key == "q" or key == "escape" then
 		love.event.quit()
+	end
+	if key == "return" then
+		stateSystem.switch(menu)
 	end
 end
 

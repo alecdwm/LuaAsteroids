@@ -1,7 +1,6 @@
 stateSystem = class{}
 stateSystem.states = {}
 
----- Entity Vars ----
 stateSystem.dir = "aster-ids/states/"
 stateSystem.filelist = {}
 stateSystem.list = {}
@@ -23,7 +22,7 @@ function stateSystem.load()
 	end
 
 	gamestate.registerEvents()
-	gamestate.switch(stateSystem.list[1])
+	gamestate.switch(default)
 end
 
 function stateSystem.switch(state)
