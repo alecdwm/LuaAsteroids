@@ -1,6 +1,3 @@
-local class = require "libraries.hump.class"
-local vector = require "libraries.hump.vector"
-
 transform = class{}
 
 function transform:init(pos,rot)
