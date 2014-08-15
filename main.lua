@@ -4,12 +4,11 @@ debug.enabled = true
 -- Libraries --
 --camera =			require "libraries.hump.camera"
 class =				require "libraries.hump.class"
-gamestate =			require "libraries.hump.gamestate"
+--gamestate =			require "libraries.hump.gamestate"
 --signal =			require "libraries.hump.signal"
-timer =				require "libraries.hump.timer"
+--timer =				require "libraries.hump.timer"
 vector =			require "libraries.hump.vector"
 --vector-light =	require "libraries.hump.vector-light"
-beholder =			require "libraries.beholder"
 mlib =				require "libraries.mlib"
 
 -- Game Files --
@@ -38,6 +37,7 @@ function love.update(dt)
 end
 
 function love.draw()
+	mlib.Shape.CheckCollisions()
 	debris.draw()
 	npcship.draw()
 	player.draw()

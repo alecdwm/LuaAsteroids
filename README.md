@@ -15,4 +15,3 @@ Asteroids for Löve2D
 [LÖVE2D](http://www.love2d.org)  
 [Helper Utilities for More Productivity](http://vrld.github.io/hump/)  
 [mLib](https://github.com/davisdude/mlib)  
-[beholder.lua](https://github.com/kikito/beholder.lua)  
