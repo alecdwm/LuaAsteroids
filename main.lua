@@ -1,6 +1,5 @@
--- Dev Commands
-devspace = {}
-devspace.debug = true
+debug = {}
+debug.enabled = true
 
 -- Libraries --
 --camera =			require "libraries.hump.camera"
@@ -13,32 +12,40 @@ vector =			require "libraries.hump.vector"
 beholder =			require "libraries.beholder"
 mlib =				require "libraries.mlib"
 
--- Game Systems --
-stateSystem =		require "aster-ids.stateSystem"
-eclSystem =			require "aster-ids.eclSystem"
+-- Game Files --
+audio =				require "audio"
+debris =			require "debris"
+npcship =			require "npcship"
+player =			require "player"
+projectiles =		require "projectiles"
 
+-- Callbacks --
 function love.load()
-	eclSystem.load()
-	stateSystem.load()
+	love.graphics.setBackgroundColor(0,0,0)
+	audio.load()
+	debris.load()
+	npcship.load()
+	player.load()
+	projectiles.load()
 end
 
---[[ Game Objects --
-local gameobjects = {}
-gameobjects.ourship = {}
-gameobjects.bullets = {}
-gameobjects.asteroidLgs = {}
-gameobjects.asteroidMids = {}
-gameobjects.asteroidSms = {}
+function love.update(dt)
+	audio.update(dt)
+	debris.update(dt)
+	npcship.update(dt)
+	player.update(dt)
+	projectiles.update(dt)
+end
 
-function love.load()
-	require "aster-ids.music"
-	require "aster-ids.sound"
-	require "aster-ids.player"
-	require "aster-ids.bullet"
-	require "aster-ids.asteroidLg"
-	require "aster-ids.asteroidMid"
-	require "aster-ids.asteroidSm"
-	sound:init()
-	gamestate.registerEvents()
-	gamestate.switch(menu)
-end]]
+function love.draw()
+	debris.draw()
+	npcship.draw()
+	player.draw()
+	projectiles.draw()
+end
+
+function love.keypressed(key)
+	if key == "escape" or key == "q" then
+		love.event.quit()
+	end
+end

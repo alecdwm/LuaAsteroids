@@ -1,7 +1,7 @@
-player = {}
+-- Class Setup --
+player = class{}
 
-require "aster-ids.bullet"
-
+-- Variables --
 local shipverts =	{	 00, 20,
 						 15,-15,
 						 05,-10,
@@ -9,20 +9,20 @@ local shipverts =	{	 00, 20,
 						-15,-15		}
 local thrustverts =	{	-05,-10,
 						 00,-20,
-						 05,-10,
-						 00,-00		}
+						 05,-10		}
 
-function player:create()
+-- Objects --
+player.ship = {}
+function player.ship:create(x,y,rot)
 	local newObj = {}
-	newObj.position = vector(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
-	newObj.rotation = 3*math.pi/2
+	newObj.position = vector(x,y)
+	newObj.rotation = rot
 	newObj.velocity = vector(0,0)
 	newObj.thrust = 120
-	newObj.spin = 6
-	newObj.dragFactor = 0.9
+	newObj.spin = 4
 	newObj.canfire = true
 	newObj.dtotal = 0
-	newObj.fireFrequency = 0.5 -- Seconds/shot
+	newObj.fireFrequency = 0.5
 	newObj.drawshape = shipverts
 	newObj.drawshape1 = thrustverts
 	newObj.drawshape1_active = false
@@ -31,8 +31,11 @@ function player:create()
 	return setmetatable(newObj,self)
 end
 
-function player:update(dt)
-	---- Take Player Input
+-- Object Instances --
+player.playerOneShip = {}
+
+-- Functions --
+function player.ship:playerInput(dt)
 	-- Ship Turning Control
 	if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
 		-- Turn left
@@ -47,7 +50,7 @@ function player:update(dt)
 		-- Effects
 		if not self.drawshape1_active then
 			self.drawshape1_active = true
-			beholder.trigger("thrust-start")
+			audio.startLoop("thrust")
 		end
 
 		-- Calculations
@@ -57,7 +60,7 @@ function player:update(dt)
 		-- Effects
 		if self.drawshape1_active then
 			self.drawshape1_active = false
-			beholder.trigger("thrust-stop")
+			audio.stopLoop("thrust")
 		end
 	end
 	-- Weapons
@@ -75,11 +78,13 @@ function player:update(dt)
 			self.canfire = false
 		end
 	end
+end
 
-	---- Move Ship
+function player.ship:moveShip(dt)
 	self.position = self.position + self.velocity * dt
+end
 
-	---- Apply Environmental Constraints
+function player.ship:reactEnvironment(dt)
 	-- Off Screen
 	if self.position.x > love.graphics.getWidth() then
 		self.position.x = 0
@@ -95,7 +100,7 @@ function player:update(dt)
 	end
 end
 
-function player:draw()
+function player.ship:draw()
 	local x,y = self.position:unpack()
 
 	love.graphics.push()
@@ -110,28 +115,39 @@ function player:draw()
 			love.graphics.polygon("line",self.drawshape1)
 		end
 	end
-	love.graphics.setColor(0,0,0,255)
-	love.graphics.polygon("fill",self.drawshape)
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.polygon("line",self.drawshape)
 	love.graphics.pop()
 end
 
-function player:fire()
-	beholder.trigger("fire")
-
+function player.ship:fire()
 	local x,y = self.position:unpack()
-	local vx,vy = self.velocity:unpack()
-
-	local vx = math.cos(self.rotation) * 800
-	local vy = math.sin(self.rotation) * 800
-
-	for key,ent in pairs(bullets) do
-		if ent.active then
-			-- Do nothing
-		else
-			ent:fire(x,y,vx,vy,true,0.8)
-			return
-		end
-	end
+	local rot = self.rotation
+	local speed = 400 + math.sqrt(self.velocity.x^2+self.velocity.y^2) -- 400 + our speed
+	local offset = 20 -- distance from center of ship to point at top
+	local lifetime = 4
+	local friendly = true
+	projectiles.fireProjectile(x,y,rot,speed,offset,lifetime,friendly)
 end
+
+-- Callbacks --
+function player.load()
+	player.playerOneShip = player.ship:create(love.graphics.getWidth()/2,love.graphics.getHeight()/2,3*math.pi/2)
+end
+
+function player.update(dt)
+	-- Take Player Input (movement/weapons)
+	player.playerOneShip:playerInput(dt)
+
+	-- Move Ship
+	player.playerOneShip:moveShip(dt)
+
+	-- Apply Environmental Constraints
+	player.playerOneShip:reactEnvironment(dt)
+end
+
+function player.draw()
+	player.playerOneShip:draw()
+end
+
+return player
