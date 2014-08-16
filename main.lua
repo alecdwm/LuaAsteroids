@@ -2,14 +2,9 @@ debug = {}
 debug.enabled = true
 
 -- Libraries --
---camera =			require "libraries.hump.camera"
 class =				require "libraries.hump.class"
---gamestate =			require "libraries.hump.gamestate"
---signal =			require "libraries.hump.signal"
---timer =				require "libraries.hump.timer"
 vector =			require "libraries.hump.vector"
---vector-light =	require "libraries.hump.vector-light"
-mlib =				require "libraries.mlib"
+HardonCollider =	require "libraries.hardoncollider"
 
 -- Game Files --
 audio =				require "audio"
@@ -18,9 +13,19 @@ npcship =			require "npcship"
 player =			require "player"
 projectiles =		require "projectiles"
 
+-- Functions --
+function onCollision(dt,shapeA,shapeB)
+	shapeA.collide(dt,shapeA,shapeB)
+	shapeB.collide(dt,shapeB,shapeA)
+end
+
 -- Callbacks --
 function love.load()
 	love.graphics.setBackgroundColor(0,0,0)
+	math.randomseed(os.time())
+
+	collider = HardonCollider(100,onCollision)
+
 	audio.load()
 	debris.load()
 	npcship.load()
@@ -29,6 +34,8 @@ function love.load()
 end
 
 function love.update(dt)
+	collider:update(dt)
+
 	audio.update(dt)
 	debris.update(dt)
 	npcship.update(dt)
@@ -37,7 +44,6 @@ function love.update(dt)
 end
 
 function love.draw()
-	mlib.Shape.CheckCollisions()
 	debris.draw()
 	npcship.draw()
 	player.draw()
