@@ -125,7 +125,7 @@ function player.ship:fire()
 	local rot = self.rotation
 	local speed = 400 + math.sqrt(self.velocity.x^2+self.velocity.y^2) -- 400 + our speed
 	local offset = 20 -- distance from center of ship to point at top
-	local lifetime = 4
+	local lifetime = 1
 	local friendly = true
 	projectiles.fireProjectile(x,y,rot,speed,offset,lifetime,friendly)
 end
