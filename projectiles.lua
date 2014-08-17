@@ -17,6 +17,11 @@ function projectiles.bullet:create(id)
 	newObj.dtotal = 0
 	newObj.active = false
 	newObj.color = {0,0,0,0}
+	newObj.shape = collider:addCircle(newObj.position.x,newObj.position.y,projectiles.radius)
+	newObj.shape.type = "projectile"
+	newObj.shape.obj = newObj
+	newObj.shape.collide = (function(dt,self,object) projectiles.collision(dt,self,object) end)
+	collider:setGhost(newObj.shape)
 	self.__index = self
 	return setmetatable(newObj,self)
 end
@@ -25,6 +30,12 @@ end
 projectiles.bulletList = {}
 
 -- Functions --
+function projectiles.collision(dt,self,object)
+	if object.type == "largeAsteroid" then
+		self.obj.active = false
+	end
+end
+
 function projectiles.newProjectile(id)
 	return projectiles.bullet:create(id)
 end
@@ -59,12 +70,15 @@ end
 function projectiles.update(dt)
 	for key,ent in pairs(projectiles.bulletList) do
 		if ent.active then
+			if collider._ghost_shapes[ent.shape] then
+				collider:setSolid(ent.shape)
+			end
 			ent.dtotal = ent.dtotal + dt
 			if ent.dtotal >= ent.lifetime then
 				ent.active = false
+				collider:setGhost(ent.shape)
 			else
 				ent.position = ent.position + ent.velocity * dt
-
 				-- Off Screen
 				if ent.position.x > love.graphics.getWidth() then
 					ent.position.x = 0
@@ -78,6 +92,12 @@ function projectiles.update(dt)
 				if ent.position.y < 0 then
 					ent.position.y = love.graphics.getHeight()
 				end
+				-- Move Shape
+				ent.shape:moveTo(ent.position.x,ent.position.y)
+			end
+		else
+			if not collider._ghost_shapes[ent.shape] then
+				collider:setGhost(ent.shape)
 			end
 		end
 	end
@@ -86,11 +106,8 @@ end
 function projectiles.draw()
 	for key,ent in pairs(projectiles.bulletList) do
 		if ent.active then
-			local x,y = ent.position:unpack()
-
 			love.graphics.setColor(ent.color)
-			love.graphics.setPointSize(2.5)
-			love.graphics.circle("fill",x,y,projectiles.radius,projectiles.segments)
+			ent.shape:draw("fill")
 		end
 	end
 end
