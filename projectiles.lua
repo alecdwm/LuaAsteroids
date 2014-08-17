@@ -33,6 +33,7 @@ projectiles.bulletList = {}
 function projectiles.collision(dt,self,object)
 	if object.type == "largeAsteroid" then
 		self.obj.active = false
+		audio.triggerSound("bangLarge")
 	end
 end
 

@@ -20,30 +20,39 @@ local thrust = 0
 -- Functions --
 function audio.triggerSound(sound)
 	if sound == "bangLarge" then
+		bangLarge:stop()
 		bangLarge:play()
 	end
 	if sound == "bangMedium" then
+		bangMedium:stop()
 		bangMedium:play()
 	end
 	if sound == "bangSmall" then
+		bangSmall:stop()
 		bangSmall:play()
 	end
 	if sound == "beat1" then
+		beat1:stop()
 		beat1:play()
 	end
 	if sound == "beat2" then
+		beat2:stop()
 		beat2:play()
 	end
 	if sound == "extraShip" then
+		extraShip:stop()
 		extraShip:play()
 	end
 	if sound == "fire" then
+		fire:stop()
 		fire:play()
 	end
 	if sound == "saucerBig" then
+		saucerBig:stop()
 		saucerBig:play()
 	end
 	if sound == "saucerSmall" then
+		saucerSmall:stop()
 		saucerSmall:play()
 	end
 end
