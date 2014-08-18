@@ -1,16 +1,6 @@
 -- Class Setup --
 player = class{}
 
--- Variables --
-local shipverts =	{	 00, 20,
-						 15,-15,
-						 05,-10,
-						-05,-10,
-						-15,-15		}
-local thrustverts =	{	-05,-10,
-						 00,-20,
-						 05,-10		}
-
 -- Objects --
 player.ship = {}
 function player.ship:create(x,y,rot)
@@ -23,10 +13,15 @@ function player.ship:create(x,y,rot)
 	newObj.canfire = true
 	newObj.dtotal = 0
 	newObj.fireFrequency = 0.5
-	newObj.drawshape = shipverts
-	newObj.drawshape1 = thrustverts
-	newObj.drawshape1_active = false
 	newObj.color = {255,255,255,255}
+	newObj.shape = collider:addPolygon(00,20, 15,-15, 05,-10, -05,-10, -15,-15)
+	newObj.thrustshape = collider:addPolygon(-05,-10, 00,-20, 05,-10)
+	collider:setGhost(newObj.thrustshape)
+	newObj.thrustshape.active = false
+	newObj.shape:moveTo(newObj.position.x,newObj.position.y)
+	newObj.shape:setRotation(newObj.rotation)
+	newObj.shape.type = "playerShip"
+	newObj.shape.collide = (function(dt,self,object) player.collision(dt,self,object) end)
 	self.__index = self
 	return setmetatable(newObj,self)
 end
@@ -35,6 +30,11 @@ end
 player.playerOneShip = {}
 
 -- Functions --
+function player.collision(dt,self,object)
+	--print("DT: "..dt.."\nSELF: "..self.type.."\nOBJECT: "..object.type)
+	audio.triggerSound("saucerBig")
+end
+
 function player.ship:playerInput(dt)
 	-- Ship Turning Control
 	if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
@@ -48,8 +48,8 @@ function player.ship:playerInput(dt)
 	-- Acceleration/Deceleration Control
 	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
 		-- Effects
-		if not self.drawshape1_active then
-			self.drawshape1_active = true
+		if not self.thrustshape_active then
+			self.thrustshape_active = true
 			audio.startLoop("thrust")
 		end
 
@@ -58,8 +58,8 @@ function player.ship:playerInput(dt)
 		self.velocity.y = self.velocity.y + math.sin(self.rotation) * self.thrust * dt
 	else
 		-- Effects
-		if self.drawshape1_active then
-			self.drawshape1_active = false
+		if self.thrustshape_active then
+			self.thrustshape_active = false
 			audio.stopLoop("thrust")
 		end
 	end
@@ -101,23 +101,17 @@ function player.ship:reactEnvironment(dt)
 end
 
 function player.ship:draw()
-	local x,y = self.position:unpack()
-
-	love.graphics.push()
-	love.graphics.translate(x,y)
-	love.graphics.rotate(self.rotation-math.pi/2)
-	if self.drawshape1_active then
+	if self.thrustshape_active then
 		show = math.random()
 		if show < 0.08 then
 			-- Don't show anything
 		else
 			love.graphics.setColor(0,191,255,255)
-			love.graphics.polygon("line",self.drawshape1)
+			self.thrustshape:draw("line")
 		end
 	end
-	love.graphics.setColor(255,255,255,255)
-	love.graphics.polygon("line",self.drawshape)
-	love.graphics.pop()
+	love.graphics.setColor(player.playerOneShip.color)
+	self.shape:draw("line")
 end
 
 function player.ship:fire()
@@ -144,6 +138,12 @@ function player.update(dt)
 
 	-- Apply Environmental Constraints
 	player.playerOneShip:reactEnvironment(dt)
+
+	-- Move Shapes
+	player.playerOneShip.shape:moveTo(player.playerOneShip.position.x,player.playerOneShip.position.y)
+	player.playerOneShip.shape:setRotation(player.playerOneShip.rotation+3*math.pi/2)
+	player.playerOneShip.thrustshape:moveTo(player.playerOneShip.position.x+math.cos(player.playerOneShip.rotation)*-12.5,player.playerOneShip.position.y+math.sin(player.playerOneShip.rotation)*-12.5)
+	player.playerOneShip.thrustshape:setRotation(player.playerOneShip.rotation+3*math.pi/2)
 end
 
 function player.draw()
