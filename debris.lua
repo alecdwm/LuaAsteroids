@@ -19,6 +19,7 @@ function debris.large:create(id)
 	newObj.shape:setRotation(newObj.rotation)
 	newObj.shape.type = "largeAsteroid"
 	newObj.shape.collide = (function(dt,self,object) debris.largeCollision(dt,self,object) end)
+	newObj.shape.obj = newObj
 	self.__index = self
 	return setmetatable(newObj,self)
 end
@@ -36,6 +37,7 @@ function debris.medium:create(id)
 	newObj.shape:setRotation(newObj.rotation)
 	newObj.shape.type = "mediumAsteroid"
 	newObj.shape.collide = (function(dt,self,object) debris.mediumCollision(dt,self,object) end)
+	newObj.shape.obj = newObj
 	collider:setGhost(newObj.shape)
 	self.__index = self
 	return setmetatable(newObj,self)
@@ -55,6 +57,7 @@ function debris.small:create(id)
 	newObj.shape.type = "smallAsteroid"
 	newObj.shape.collide = (function(dt,self,object) debris.smallCollision(dt,self,object) end)
 	collider:setGhost(newObj.shape)
+	newObj.shape.obj = newObj
 	self.__index = self
 	return setmetatable(newObj,self)
 end
@@ -76,13 +79,67 @@ function debris.newSmall(id)
 end
 
 function debris.largeCollision(dt,self,object)
-	--print("DT: "..dt.."\nSELF: "..self.type.."\nOBJECT: "..object.type)
+	if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+		--self.obj.velocity.x = self.obj.velocity.x + math.cos(self.obj.rotation) * (object.obj.position.x-self.obj.position.x) * dt
+		--self.obj.velocity.y = self.obj.velocity.y + math.sin(self.obj.rotation) * (object.obj.position.y-self.obj.position.y) * dt
+		self.obj.velocity.x = -self.obj.velocity.x
+		self.obj.velocity.y = -self.obj.velocity.y
+		self.obj.spin = object.obj.spin
+	end
+	if object.type == "projectile" then
+		for i=1,3,1 do
+			for key,ent in pairs(debris.mediumList) do
+				if ent.active == true then
+					i = i - 1
+				else
+					ent.position.x = self.obj.position.x + math.random(-40,40)
+					ent.position.y = self.obj.position.y + math.random(-40,40)
+					ent.active = true
+					break
+				end
+			end
+		end
+		audio.triggerSound("bangLarge")
+		self.obj.active = false
+	end
 end
 function debris.mediumCollision(dt,self,object)
-	--print("DT: "..dt.."\nSELF: "..self.type.."\nOBJECT: "..object.type)
+	if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+		--self.obj.velocity.x = self.obj.velocity.x + math.cos(self.obj.rotation) * (object.obj.position.x-self.obj.position.x) * dt
+		--self.obj.velocity.y = self.obj.velocity.y + math.sin(self.obj.rotation) * (object.obj.position.y-self.obj.position.y) * dt
+		self.obj.velocity.x = -self.obj.velocity.x
+		self.obj.velocity.y = -self.obj.velocity.y
+		self.obj.spin = object.obj.spin
+	end
+	if object.type == "projectile" then
+		for i=1,3,1 do
+			for key,ent in pairs(debris.smallList) do
+				if ent.active == true then
+					i = i - 1
+				else
+					ent.position.x = self.obj.position.x + math.random(-20,20)
+					ent.position.y = self.obj.position.y + math.random(-20,20)
+					ent.active = true
+					break
+				end
+			end
+		end
+		audio.triggerSound("bangMedium")
+		self.obj.active = false
+	end
 end
 function debris.smallCollision(dt,self,object)
-	--print("DT: "..dt.."\nSELF: "..self.type.."\nOBJECT: "..object.type)
+	if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+		--self.obj.velocity.x = self.obj.velocity.x + math.cos(self.obj.rotation) * (object.obj.position.x-self.obj.position.x) * dt
+		--self.obj.velocity.y = self.obj.velocity.y + math.sin(self.obj.rotation) * (object.obj.position.y-self.obj.position.y) * dt
+		self.obj.velocity.x = -self.obj.velocity.x
+		self.obj.velocity.y = -self.obj.velocity.y
+		self.obj.spin = object.obj.spin
+	end
+	if object.type == "projectile" then
+		audio.triggerSound("bangSmall")
+		self.obj.active = false
+	end
 end
 
 -- Callbacks --
@@ -90,10 +147,10 @@ function debris.load()
 	for i=1,7 do
 		debris.largeList[i] = debris.large:create(i)
 	end
-	for i=1,13 do
+	for i=1,21 do
 		debris.mediumList[i] = debris.medium:create(i)
 	end
-	for i=1,28 do
+	for i=1,63 do
 		debris.smallList[i] = debris.small:create(i)
 	end
 end

@@ -22,6 +22,7 @@ function player.ship:create(x,y,rot)
 	newObj.shape:setRotation(newObj.rotation)
 	newObj.shape.type = "playerShip"
 	newObj.shape.collide = (function(dt,self,object) player.collision(dt,self,object) end)
+	newObj.shape.obj = newObj
 	self.__index = self
 	return setmetatable(newObj,self)
 end
@@ -32,6 +33,9 @@ player.playerOneShip = {}
 -- Functions --
 function player.collision(dt,self,object)
 	--print("DT: "..dt.."\nSELF: "..self.type.."\nOBJECT: "..object.type)
+	if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+		-- Kill Player
+	end
 	audio.triggerSound("saucerBig")
 end
 

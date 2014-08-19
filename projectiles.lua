@@ -31,9 +31,8 @@ projectiles.bulletList = {}
 
 -- Functions --
 function projectiles.collision(dt,self,object)
-	if object.type == "largeAsteroid" then
+	if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
 		self.obj.active = false
-		audio.triggerSound("bangLarge")
 	end
 end
 
