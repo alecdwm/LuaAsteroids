@@ -1,5 +1,5 @@
 -- Class Setup --
-npcship = class{}
+npcship = {}
 
 -- Variables --
 

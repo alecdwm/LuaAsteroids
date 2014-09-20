@@ -1,5 +1,5 @@
 -- Class Setup --
-debris = class{}
+debris = {}
 
 -- Objects --
 debris.large = {}

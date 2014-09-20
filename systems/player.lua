@@ -1,5 +1,5 @@
 -- Class Setup --
-player = class{}
+player = {}
 
 -- Objects --
 player.ship = {}
@@ -34,9 +34,14 @@ player.playerOneShip = {}
 function player.collision(dt,self,object)
 	--print("DT: "..dt.."\nSELF: "..self.type.."\nOBJECT: "..object.type)
 	if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+		player.playerOneShip:explode()
 		-- Kill Player
 	end
 	audio.triggerSound("saucerBig")
+end
+
+function player.ship:explode()
+	love.event.quit()
 end
 
 function player.ship:playerInput(dt)

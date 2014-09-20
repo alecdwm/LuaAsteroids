@@ -1,5 +1,5 @@
 -- Class Setup --
-projectiles = class{}
+projectiles = {}
 
 -- Variables --
 projectiles.radius = 1.5

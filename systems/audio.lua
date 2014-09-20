@@ -1,5 +1,5 @@
 -- Class Setup --
-audio = class{}
+audio = {}
 
 -- Variables --
 local dtotal = 0
