@@ -79,13 +79,13 @@ function debris.newSmall(id)
 end
 
 function debris.largeCollision(dt,self,object)
-    if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+    --[[if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
         --self.obj.velocity.x = self.obj.velocity.x + math.cos(self.obj.rotation) * (object.obj.position.x-self.obj.position.x) * dt
         --self.obj.velocity.y = self.obj.velocity.y + math.sin(self.obj.rotation) * (object.obj.position.y-self.obj.position.y) * dt
         self.obj.velocity.x = -self.obj.velocity.x
         self.obj.velocity.y = -self.obj.velocity.y
         self.obj.spin = object.obj.spin
-    end
+    end]]
     if object.type == "projectile" then
         for i=1,3,1 do
             for key,ent in pairs(debris.mediumList) do
@@ -104,13 +104,13 @@ function debris.largeCollision(dt,self,object)
     end
 end
 function debris.mediumCollision(dt,self,object)
-    if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+    --[[if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
         --self.obj.velocity.x = self.obj.velocity.x + math.cos(self.obj.rotation) * (object.obj.position.x-self.obj.position.x) * dt
         --self.obj.velocity.y = self.obj.velocity.y + math.sin(self.obj.rotation) * (object.obj.position.y-self.obj.position.y) * dt
         self.obj.velocity.x = -self.obj.velocity.x
         self.obj.velocity.y = -self.obj.velocity.y
         self.obj.spin = object.obj.spin
-    end
+    end]]
     if object.type == "projectile" then
         for i=1,3,1 do
             for key,ent in pairs(debris.smallList) do
@@ -129,13 +129,13 @@ function debris.mediumCollision(dt,self,object)
     end
 end
 function debris.smallCollision(dt,self,object)
-    if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
+    --[[if object.type == "largeAsteroid" or object.type == "mediumAsteroid" or object.type == "smallAsteroid" then
         --self.obj.velocity.x = self.obj.velocity.x + math.cos(self.obj.rotation) * (object.obj.position.x-self.obj.position.x) * dt
         --self.obj.velocity.y = self.obj.velocity.y + math.sin(self.obj.rotation) * (object.obj.position.y-self.obj.position.y) * dt
         self.obj.velocity.x = -self.obj.velocity.x
         self.obj.velocity.y = -self.obj.velocity.y
         self.obj.spin = object.obj.spin
-    end
+    end]]
     if object.type == "projectile" then
         audio.triggerSound("bangSmall")
         self.obj.active = false
