@@ -11,15 +11,15 @@ npcship = {}
 
 -- Callbacks --
 function npcship.load()
-	--Load
+    --Load
 end
 
 function npcship.update(dt)
-	--Update(dt)
+    --Update(dt)
 end
 
 function npcship.draw()
-	--Draw
+    --Draw
 end
 
 return npcship

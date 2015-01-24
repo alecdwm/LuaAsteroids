@@ -11,7 +11,7 @@ A clone of Atari's 1979 *Asteroids*, written in Lua using the Löve2D framework.
 >This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ## Credits
-[Atari](http://www.atari.com/)
-[LÖVE2D](http://www.love2d.org)
-[Helper Utilities for More Productivity](http://vrld.github.io/hump/)
-[HardonCollider](https://github.com/vrld/HardonCollider)
+[Atari](http://www.atari.com/)  
+[LÖVE2D](http://www.love2d.org)  
+[Helper Utilities for More Productivity](http://vrld.github.io/hump/)  
+[HardonCollider](https://github.com/vrld/HardonCollider)  

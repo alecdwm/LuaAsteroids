@@ -4,7 +4,7 @@ menu = {}
 menu.string = "menu"
 
 function menu.stateEntry()
-	states.changeState("game")
+    states.changeState("game")
 end
 
 return menu
