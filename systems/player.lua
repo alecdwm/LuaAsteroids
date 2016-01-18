@@ -81,7 +81,7 @@ function player.ship:playerInput(dt)
             self.dtotal = self.dtotal + dt
         end
     end
-    if love.keyboard.isDown(" ") then
+    if love.keyboard.isDown("space") then
         if self.canfire then
             self:fire()
             self.canfire = false
